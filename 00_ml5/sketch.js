@@ -12,22 +12,22 @@ function preload() {
   mCamera = createCapture(VIDEO, { flipped: true });
   mCamera.hide();
 
-  // mModel = ml5.faceMesh({ flipped: true });
-  mModel = ml5.handPose({ flipped: true });
+  mModel = ml5.faceMesh();
+  // mModel = ml5.handPose();
 }
 
-// when some "thing" is detected, just copy it
+// when some "thing" is detected, just copy it to mDetected
 function updateDetected(detected) {
   mDetected = detected;
+  mModel.detect(mCamera, updateDetected);
 }
 
 function setup() {
   // create p5js canvas
   createCanvas(windowWidth, windowHeight);
 
-  // start running the model on camera stream
-  // call updateDetected whenever "thing" is detected
-  mModel.detectStart(mCamera, updateDetected);
+  // run the model once on camera image
+  mModel.detect(mCamera, updateDetected);
 }
 
 function draw() {
@@ -38,8 +38,8 @@ function draw() {
   noStroke();
 
   // draw a circle at every keypoint of each detected "thing"
-  for (const dObj of mDetected) {
-    for (const kpoint of dObj.keypoints) {
+  for (let dObj of mDetected) {
+    for (let kpoint of dObj.keypoints) {
       circle(kpoint.x, kpoint.y, 8);
     }
   }
