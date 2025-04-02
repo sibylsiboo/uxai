@@ -20,7 +20,6 @@ function setup() {
   video.size(800, 600);
   video.hide();
 
-  // Initialize cards with positions and tarot meanings
   for (let i = 0; i < 5; i++) {
     cards.push({
       x: 100 + i * 130,
